@@ -1,7 +1,6 @@
 package view.panel;
 
-import controller.Controller;
-import view.button.ColorButton;
+import view.component.ColorButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,12 +30,6 @@ class ColorPanel extends JPanel {
 
         for (ColorButton colorButton : colorButtons) {
             add(colorButton);
-        }
-    }
-
-    void bindController(Controller ctrl) {
-        for (ColorButton colorButton : colorButtons) {
-            colorButton.bindController(ctrl);
         }
     }
 }

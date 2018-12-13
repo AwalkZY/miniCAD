@@ -3,13 +3,13 @@ package model.shape;
 import model.common.Common;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
-public class Rectangle extends Shape{
+public class Ellipse extends Shape{
     private Point sp, ep;
 
-    public Rectangle(Point point){
-        this.sp = point;
-        this.ep = point;
+    public Ellipse(Point point){
+        this.ep = this.sp = point;
     }
 
     @Override
@@ -19,9 +19,9 @@ public class Rectangle extends Shape{
         int y = Math.min(sp.y, ep.y);
         int width = sp.x + ep.x - 2 * x;
         int height = sp.y + ep.y - 2 * y;
-        g.drawRect(x,y,width,height);
+        g.drawOval(x,y,width,height);
         g.setColor(insideColor);
-        if (this.isFilled) g.fillRect(x+1,y+1,width-1,height-1);
+        if (this.isFilled) g.fillOval(x,y,width,height);
     }
 
     @Override

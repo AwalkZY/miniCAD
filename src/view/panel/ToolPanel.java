@@ -1,10 +1,12 @@
 package view.panel;
 
 import controller.Controller;
-import view.button.ToolButton;
+import view.component.ToolButton;
 import model.common.Tool;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -13,12 +15,21 @@ public class ToolPanel extends JPanel{
 
     private ArrayList<ToolButton> toolButtons = new ArrayList<>();
     private ColorPanel colorPanel = new ColorPanel();
-
+    private JToggleButton fillToggle;
     public ToolPanel(){
         GridLayout mainLayout = new GridLayout(0,1);
         setLayout(mainLayout);
+        initToggles();
         initTools();
         add(colorPanel);
+    }
+
+    private void initToggles(){
+        ImageIcon imgIcon = new ImageIcon("static/icon/color.png");
+        imgIcon.setImage(imgIcon.getImage().getScaledInstance(50, 50, 1));
+        fillToggle = new JToggleButton("Fill-in",imgIcon);
+        fillToggle.addChangeListener(Controller.getCurCtrl().createChangeListener());
+        add(fillToggle);
     }
 
     private void initTools() {
@@ -27,17 +38,11 @@ public class ToolPanel extends JPanel{
         toolButtons.add(new ToolButton("Fold Line","static/icon/fold.png", Tool.FOLD));
         toolButtons.add(new ToolButton("Polygon","static/icon/poly.png", Tool.POLY));
         toolButtons.add(new ToolButton("Rectangle","static/icon/rect.png", Tool.RECT));
-        toolButtons.add(new ToolButton("Eclipse","static/icon/eclipse.png", Tool.ECLIPSE));
+        toolButtons.add(new ToolButton("Ellipse","static/icon/ellipse.png", Tool.ELLIPSE));
         toolButtons.add(new ToolButton("Text","static/icon/text.png", Tool.TEXT));
+        toolButtons.add(new ToolButton("Clear","static/icon/trash.png", Tool.TRASH));
         for (ToolButton toolButton : toolButtons) {
             add(toolButton);
         }
-    }
-
-    public void bindController(Controller ctrl) {
-        for (ToolButton toolButton : toolButtons) {
-            toolButton.bindController(ctrl);
-        }
-        colorPanel.bindController(ctrl);
     }
 }

@@ -2,6 +2,8 @@ package view.frame;
 
 import controller.Controller;
 import view.panel.*;
+import view.panel.MenuBar;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +13,7 @@ public class MainFrame extends JFrame {
 
     private CanvasPanel canvasPanel = new CanvasPanel();
     private ToolPanel toolPanel = new ToolPanel();
+    private MenuBar menuBar = new MenuBar();
 
     public MainFrame() {
         this(800,800); //默认长宽各700
@@ -18,19 +21,19 @@ public class MainFrame extends JFrame {
 
     public MainFrame(int height, int width) {
         setTitle("MiniCAD"); //设置界面标题
-        setSize(width,height); //设置界面宽度与高度
+        setSize(width, height); //设置界面宽度与高度
         BorderLayout borderLayout = new BorderLayout();  //新建BorderLayout布局管理器
         setLayout(borderLayout);  //设置布局管理器
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //设置界面默认关闭方式
         setVisible(true); //设置界面是否可视
         setAlwaysOnTop(true); //设置界面是否固定在最顶端
         setBackground(Color.WHITE); //设置背景颜色为白色
-        add(BorderLayout.CENTER,canvasPanel);  //向当前界面添加绘图面板
-        add(BorderLayout.EAST,toolPanel);  //向当前界面添加操作面板
+        add(BorderLayout.NORTH, menuBar);
+        add(BorderLayout.CENTER, canvasPanel);  //向当前界面添加绘图面板
+        add(BorderLayout.EAST, toolPanel);  //向当前界面添加操作面板
     }
 
-    public void bindController(Controller ctrl) {
-        toolPanel.bindController(ctrl);
+    public void reRender(){
+        this.canvasPanel.reRender();
     }
 }
