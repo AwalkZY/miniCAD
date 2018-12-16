@@ -241,4 +241,36 @@ public class Model {
         shapes.add(copyShape);
         view.reRender();
     }
+
+    public void layerMove(int direction, boolean isAll) {
+        if (curShape == null) return;
+        // System.out.println("dir:"+direction);
+        if (direction == 1) { //up
+            if (isAll) {
+                shapes.remove(curShape);
+                shapes.add(curShape);
+                view.reRender();
+                return;
+            }
+            int index = shapes.indexOf(curShape);
+            if (index == shapes.size()-1) return;
+            Shape next = shapes.get(index+1);
+            shapes.set(index,next);
+            shapes.set(index+1,curShape);
+            view.reRender();
+            return;
+        }
+        if (isAll) {
+            shapes.remove(curShape);
+            shapes.add(0,curShape);
+            view.reRender();
+            return;
+        }
+        int index = shapes.indexOf(curShape);
+        if (index == 0) return;
+        Shape prev = shapes.get(index-1);
+        shapes.set(index,prev);
+        shapes.set(index-1,curShape);
+        view.reRender();
+    }
 }

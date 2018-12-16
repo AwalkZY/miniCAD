@@ -179,7 +179,7 @@ public class Controller {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getKeyCode());
+                // System.out.println(e.getKeyCode());
                 if (e.getKeyCode() == 16) model.setEqual(true);
                 if (e.getKeyCode() == 61 || e.getKeyCode() == 107) model.zoomShape(1);
                 if (e.getKeyCode() == 45 || e.getKeyCode() == 109) model.zoomShape(-1);
@@ -214,6 +214,15 @@ public class Controller {
             @Override
             public void actionPerformed(ActionEvent e) {
                 model.paste();
+            }
+        };
+    }
+
+    public ActionListener createLayerListener(int direction, boolean isAll) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.layerMove(direction,isAll);
             }
         };
     }
