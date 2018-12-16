@@ -1,7 +1,6 @@
 package controller.state;
 
 import model.Model;
-import model.common.Tool;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -35,9 +34,8 @@ public class MoveOperator implements State {
     @Override
     public State leftDrag(MouseEvent e) {
         if (lastPoint != null) {
-            Model.getCurModel().moveShape(e.getX()-lastPoint.x, e.getY()-lastPoint.y);
-        }
-        else {
+            Model.getCurModel().moveShape(e.getX() - lastPoint.x, e.getY() - lastPoint.y);
+        } else {
             if (!Model.getCurModel().clickCurShape(e.getPoint())) return this;
         }
         lastPoint = e.getPoint();

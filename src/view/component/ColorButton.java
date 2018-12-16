@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class ColorButton extends JButton {
 
-    public ColorButton(Color color){
+    public ColorButton(Color color) {
         setBackground(color);
         addMouseListener(Controller.getCurCtrl().createColorListener(color));
     }

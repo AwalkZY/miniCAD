@@ -3,6 +3,7 @@ package controller;
 import controller.state.*;
 import model.Model;
 import model.common.Tool;
+import view.View;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -11,11 +12,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Controller {
+    private static Controller curCtrl;
     private Model model;
     private ArrayList<ActionListener> toolListeners = new ArrayList<>();
     private ArrayList<MouseListener> colorListeners = new ArrayList<>();
     private State curState;
-    private static Controller curCtrl;
 
     public Controller() {
         curCtrl = this;
@@ -26,6 +27,7 @@ public class Controller {
         State.states[Tool.ELLIPSE] = State.states[Tool.LINE];
         State.states[Tool.POLY] = new MultiplePointGenerator();
         State.states[Tool.FOLD] = State.states[Tool.POLY];
+        State.states[Tool.TEXT] = State.states[Tool.IDLE];
         curState = State.getState(Tool.IDLE);
     }
 
@@ -44,9 +46,11 @@ public class Controller {
                 if (typeCode == Tool.TRASH) {
                     model.clear();
                     model.setToolType(Tool.POINTER);
-                }
-                else model.setToolType(typeCode);
+                } else model.setToolType(typeCode);
                 curState = State.getState(Tool.IDLE);
+                model.flushCurShape();
+                View.getCurView().getMainFrame().requestFocus();
+                View.getCurView().reRender();
             }
         };
     }
@@ -63,11 +67,11 @@ public class Controller {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    model.setColor(color,0);
+                    model.setColor(color, 0);
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    model.setColor(color, 1);
                 }
-                else if (e.getButton() == MouseEvent.BUTTON3) {
-                    model.setColor(color,1);
-                }
+                View.getCurView().getMainFrame().requestFocus();
             }
 
             @Override
@@ -101,8 +105,7 @@ public class Controller {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     curState = curState.leftRelease(e);
-                }
-                else if (e.getButton() == MouseEvent.BUTTON3) {
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
                     curState = curState.rightRelease(e);
                 }
             }
@@ -133,12 +136,9 @@ public class Controller {
             }
 
             public void mouseDragged(MouseEvent e) {
-                if (e.getModifiers() == InputEvent.BUTTON1_MASK)   //判断如果鼠标左键拖拽
-                {
+                if (e.getModifiers() == InputEvent.BUTTON1_MASK) {   //判断如果鼠标左键拖拽
                     curState = curState.leftDrag(e);
-                }
-                else if (e.getModifiers() == InputEvent.BUTTON3_MASK) {//判断如果鼠标右键拖拽
-//                    curState = curState.rightDrag(e);
+                } else if (e.getModifiers() == InputEvent.BUTTON3_MASK) {//判断如果鼠标右键拖拽
                 }
             }
         };
@@ -148,25 +148,72 @@ public class Controller {
         return new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                Model.getCurModel().switchFilled();
+                model.switchFilled();
             }
         };
     }
 
-    public ActionListener createSaveListener(){
+    public ActionListener createSaveListener() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Model.getCurModel().saveToFile();
+                model.saveToFile();
             }
         };
     }
 
-    public ActionListener createReadListener(){
+    public ActionListener createReadListener() {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Model.getCurModel().readFromFile();
+                model.readFromFile();
+            }
+        };
+    }
+
+    public KeyAdapter createKeyListener() {  //TODO: Ctrl-> Circle and Square
+        return new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println(e.getKeyCode());
+                if (e.getKeyCode() == 16) model.setEqual(true);
+                if (e.getKeyCode() == 61 || e.getKeyCode() == 107) model.zoomShape(1);
+                if (e.getKeyCode() == 45 || e.getKeyCode() == 109) model.zoomShape(-1);
+                if (e.getKeyCode() == 10) model.modifyText();
+                if (e.getKeyCode() == 44 || e.getKeyCode() == 46) model.modifyStroke(e.getKeyCode() - 45);
+                if (e.getKeyCode() == 10) model.changeFilled();
+                if (e.getKeyCode() == 37) model.moveShape(-1, 0);
+                if (e.getKeyCode() == 38) model.moveShape(0, -1);
+                if (e.getKeyCode() == 39) model.moveShape(1, 0);
+                if (e.getKeyCode() == 40) model.moveShape(0, 1);
+                if (e.getKeyCode() == 127) model.removeShape();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == 16) model.setEqual(false);
+            }
+        };
+    }
+
+    public ActionListener createCopyListener() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.copy();
+            }
+        };
+    }
+
+    public ActionListener createPasteListener() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                model.paste();
             }
         };
     }

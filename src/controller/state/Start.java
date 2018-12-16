@@ -3,10 +3,8 @@ package controller.state;
 import model.Model;
 import model.common.Tool;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 
 public class Start implements State {
     @Override

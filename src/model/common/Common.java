@@ -1,13 +1,10 @@
 package model.common;
 
-import model.shape.Line;
-
 import java.awt.*;
 import java.util.Stack;
 
 public class Common {
-    private static double EPS = 2;
-    private static double MINDIST = 15;
+    static final double ZOOMRATE = 0.05;
 
     public static Point getMidPoint(Point sp, Point ep) {
         return new Point((sp.x + ep.x) / 2, (sp.y + ep.y) / 2);
@@ -25,16 +22,14 @@ public class Common {
     }
 
     public static boolean isNearby(Point a, Point b) {
-        System.out.println(a.distance(b));
-        return a.distance(b) <= EPS;
+        //System.out.println(a.distance(b));
+        return a.distance(b) <= 2;
     }
-
-    //TODO: 判断各个形状是否被点击
-    //TODO: 画圆、正方形
 
     public static boolean isNearby(Point sp, Point ep, Point p) {
         double cross = (ep.x - sp.x) * (p.x - sp.x) + (ep.y - sp.y) * (p.y - sp.y);
         double d2 = (ep.x - sp.x) * (ep.x - sp.x) + (ep.y - sp.y) * (ep.y - sp.y);
+        double MINDIST = 15;
         if (cross <= 0) return (Math.sqrt((p.x - sp.x) * (p.x - sp.x) + (p.y - sp.y) * (p.y - sp.y)) <= MINDIST);
         if (cross >= d2) return (Math.sqrt((p.x - ep.x) * (p.x - ep.x) + (p.y - ep.y) * (p.y - ep.y)) <= MINDIST);
         double r = cross / d2;
@@ -84,5 +79,58 @@ public class Common {
             max_y = Math.max(max_y, y);
         }
         Common.drawBorder(g, min_x, min_y, max_x - min_x, max_y - min_y);
+    }
+
+    public static Point[] simpleZoom(int scale, Point sp, Point ep) {
+        if (sp.distance(ep) == 0) {
+            if (scale == 1) {
+                sp.x--;
+                sp.y--;
+                ep.x++;
+                ep.y++;
+            }
+            return new Point[]{sp, ep};
+        }
+        Point formerCenter = getMidPoint(sp, ep);
+        Point new_sp = new Point((int) (sp.x + scale * ZOOMRATE * (sp.x - ep.x)), (int) (sp.y + scale * ZOOMRATE * (sp.y - ep.y)));
+        Point new_ep = new Point((int) (ep.x + scale * ZOOMRATE * (ep.x - sp.x)), (int) (ep.y + scale * ZOOMRATE * (ep.y - sp.y)));
+        Point latterCenter = getMidPoint(new_sp, new_ep);
+        sp.setLocation(new_sp.getX() + formerCenter.getX() - latterCenter.getX(), new_sp.getY() + formerCenter.getY() - latterCenter.getY());
+        ep.setLocation(new_ep.getX() + formerCenter.getX() - latterCenter.getX(), new_ep.getY() + formerCenter.getY() - latterCenter.getY());
+        return new Point[]{sp, ep};
+    }
+
+    public static void complexZoom(int scale, Stack<Integer> xPoint, Stack<Integer> yPoint) {
+        Integer[] xs = new Integer[xPoint.size()];
+        Integer[] ys = new Integer[yPoint.size()];
+        xPoint.toArray(xs);
+        yPoint.toArray(ys);
+        Point[] points = new Point[xPoint.size()];
+        for (int i = 0; i < xPoint.size(); i++)
+            points[i] = new Point(xs[i], ys[i]);
+        Point center = getCenter(points);
+        for (int i = 0; i < xPoint.size(); i++) {
+            xs[i] = xs[i] + (int) (scale * ZOOMRATE * (xs[i] - center.x));
+            ys[i] = ys[i] + (int) (scale * ZOOMRATE * (ys[i] - center.y));
+        }
+        for (int i = 0; i < xPoint.size(); i++)
+            points[i] = new Point(xs[i], ys[i]);
+        Point newCenter = getCenter(points);
+        for (int i = 0; i < xPoint.size(); i++) {
+            xPoint.set(i, (int) (xs[i] + center.getX() - newCenter.getX()));
+            yPoint.set(i, (int) (ys[i] + center.getY() - newCenter.getY()));
+        }
+    }
+
+    public static int cross(int x1, int y1, int x2, int y2){
+        return x1*y2-x2*y1;
+    }
+
+    public static int cross(Point a, Point b, Point c){
+        return cross(b.x-a.x,b.y-a.y,c.x-a.x,c.y-a.y);
+    }
+
+    public static double dist(int x1, int y1, int x2, int y2) {
+        return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
     }
 }

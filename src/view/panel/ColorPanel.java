@@ -11,8 +11,8 @@ class ColorPanel extends JPanel {
 
     private ArrayList<ColorButton> colorButtons = new ArrayList<ColorButton>();
 
-    ColorPanel(){
-        GridLayout mainLayout = new GridLayout(3,3,1,1);
+    ColorPanel() {
+        GridLayout mainLayout = new GridLayout(3, 3, 1, 1);
         setLayout(mainLayout);
         initColors();
     }
@@ -27,7 +27,6 @@ class ColorPanel extends JPanel {
         colorButtons.add(new ColorButton(Color.YELLOW));
         colorButtons.add(new ColorButton(Color.MAGENTA));
         colorButtons.add(new ColorButton(Color.ORANGE));
-
         for (ColorButton colorButton : colorButtons) {
             add(colorButton);
         }

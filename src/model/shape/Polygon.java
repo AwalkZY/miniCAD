@@ -3,13 +3,14 @@ package model.shape;
 import model.common.Common;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Stack;
 
-public class Polygon extends Shape{
+public class Polygon extends Shape {
     private Stack<Integer> xPoint;
     private Stack<Integer> yPoint;
 
-    public Polygon(Point sp){
+    public Polygon(Point sp) {
         xPoint = new Stack<>();
         yPoint = new Stack<>();
         xPoint.push(sp.x);
@@ -18,33 +19,44 @@ public class Polygon extends Shape{
         yPoint.push(sp.y);
     }
 
+    @SuppressWarnings("unchecked")
+    public Polygon clone() throws CloneNotSupportedException {
+        Polygon newPolygon = (Polygon) super.clone();
+        newPolygon.xPoint = (Stack<Integer>) xPoint.clone();
+        newPolygon.yPoint = (Stack<Integer>) yPoint.clone();
+        return newPolygon;
+    }
+
     @Override
     public void draw(Graphics2D g) {
         g.setColor(contourColor);
+        g.setStroke(new BasicStroke(strokeNum));
         Integer[] xs = new Integer[xPoint.size()];
         Integer[] ys = new Integer[yPoint.size()];
         xPoint.toArray(xs);
         yPoint.toArray(ys);
+//        System.out.println("xPoint: " + xPoint.size());
+//        System.out.println("yPoint: " + yPoint.size());
         int[] int_xs = new int[xPoint.size()];
         int[] int_ys = new int[yPoint.size()];
         for (int i = 0; i < xPoint.size(); i++) int_xs[i] = xs[i];
         for (int i = 0; i < yPoint.size(); i++) int_ys[i] = ys[i];
-        g.drawPolygon(int_xs,int_ys,xPoint.size());
+        g.drawPolygon(int_xs, int_ys, xPoint.size());
         g.setColor(insideColor);
-        if (this.isFilled) g.fillPolygon(int_xs,int_ys,xPoint.size());
+        if (this.isFilled) g.fillPolygon(int_xs, int_ys, xPoint.size());
     }
 
     @Override
-    public void expand(Point p) {
+    public void expand(Point p, boolean equal) {
         xPoint.push(p.x);
         yPoint.push(p.y);
-        System.out.println("size:"+xPoint.size());
+        //System.out.println("size:" + xPoint.size());
     }
 
     @Override
-    public void modify(Point p) {
+    public void modify(Point p, boolean equal) {
         rollback();
-        expand(p);
+        expand(p, false);
     }
 
     @Override
@@ -55,6 +67,11 @@ public class Polygon extends Shape{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void modifyText(String Text) {
+
     }
 
     @Override
@@ -87,4 +104,10 @@ public class Polygon extends Shape{
     public void drawBorder(Graphics2D g) {
         Common.complexDrawBorder(g, xPoint, yPoint);
     }
+
+    @Override
+    public void zoomShape(int scale) {
+        Common.complexZoom(scale, xPoint, yPoint);
+    }
+
 }

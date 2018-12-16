@@ -1,8 +1,9 @@
 package view.frame;
 
 import controller.Controller;
-import view.panel.*;
+import view.panel.CanvasPanel;
 import view.panel.MenuBar;
+import view.panel.ToolPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,10 @@ public class MainFrame extends JFrame {
     private CanvasPanel canvasPanel = new CanvasPanel();
     private ToolPanel toolPanel = new ToolPanel();
     private MenuBar menuBar = new MenuBar();
+    private JOptionPane dialogPanel = new JOptionPane();
 
     public MainFrame() {
-        this(800,800); //默认长宽各700
+        this(800, 1000); //默认长宽
     }
 
     public MainFrame(int height, int width) {
@@ -31,9 +33,12 @@ public class MainFrame extends JFrame {
         add(BorderLayout.NORTH, menuBar);
         add(BorderLayout.CENTER, canvasPanel);  //向当前界面添加绘图面板
         add(BorderLayout.EAST, toolPanel);  //向当前界面添加操作面板
+        setFocusable(true);
+        addKeyListener(Controller.getCurCtrl().createKeyListener());
+        requestFocus();
     }
 
-    public void reRender(){
+    public void reRender() {
         this.canvasPanel.reRender();
     }
 }

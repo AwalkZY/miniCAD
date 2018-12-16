@@ -5,10 +5,11 @@ import model.common.Tool;
 
 import java.awt.event.MouseEvent;
 
-public class TwoPointGenerator implements State{
+public class TwoPointGenerator implements State {
     @Override
     public State leftClick(MouseEvent e) {
-        Model.getCurModel().expandShape(e.getPoint());
+        Model model = Model.getCurModel();
+        model.expandShape(e.getPoint(), model.getEqual());
         return State.getState(Tool.IDLE);
     }
 
@@ -20,7 +21,8 @@ public class TwoPointGenerator implements State{
 
     @Override
     public State move(MouseEvent e) {
-        Model.getCurModel().modifyShape(e.getPoint());
+        Model model = Model.getCurModel();
+        Model.getCurModel().modifyShape(e.getPoint(), model.getEqual());
         return this;
     }
 

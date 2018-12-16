@@ -7,13 +7,13 @@ import model.common.Tool;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class MultiplePointGenerator implements State{
+public class MultiplePointGenerator implements State {
     private Point lastPoint;
 
     @Override
     public State leftClick(MouseEvent e) {
-        Model.getCurModel().expandShape(e.getPoint());
-        if (lastPoint != null && Common.isNearby(lastPoint,e.getPoint())) {
+        Model.getCurModel().expandShape(e.getPoint(), false);
+        if (lastPoint != null && Common.isNearby(lastPoint, e.getPoint())) {
             return State.getState(Tool.IDLE);
         }
         lastPoint = e.getPoint();
@@ -23,7 +23,7 @@ public class MultiplePointGenerator implements State{
     @Override
     public State rightClick(MouseEvent e) {
         if (Model.getCurModel().rollbackShape()) {
-            Model.getCurModel().modifyShape(e.getPoint());
+            Model.getCurModel().modifyShape(e.getPoint(), false);
             return this;
         }
         return State.getState(Tool.IDLE);
@@ -31,7 +31,7 @@ public class MultiplePointGenerator implements State{
 
     @Override
     public State move(MouseEvent e) {
-        Model.getCurModel().modifyShape(e.getPoint());
+        Model.getCurModel().modifyShape(e.getPoint(), false);
         return this;
     }
 
