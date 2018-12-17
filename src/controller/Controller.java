@@ -49,8 +49,6 @@ public class Controller {
                 } else model.setToolType(typeCode);
                 curState = State.getState(Tool.IDLE);
                 model.flushCurShape();
-                View.getCurView().getMainFrame().requestFocus();
-                View.getCurView().reRender();
             }
         };
     }
@@ -71,7 +69,6 @@ public class Controller {
                 } else if (e.getButton() == MouseEvent.BUTTON3) {
                     model.setColor(color, 1);
                 }
-                View.getCurView().getMainFrame().requestFocus();
             }
 
             @Override
@@ -105,8 +102,6 @@ public class Controller {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     curState = curState.leftRelease(e);
-                } else if (e.getButton() == MouseEvent.BUTTON3) {
-                    curState = curState.rightRelease(e);
                 }
             }
 
@@ -138,7 +133,6 @@ public class Controller {
             public void mouseDragged(MouseEvent e) {
                 if (e.getModifiers() == InputEvent.BUTTON1_MASK) {   //判断如果鼠标左键拖拽
                     curState = curState.leftDrag(e);
-                } else if (e.getModifiers() == InputEvent.BUTTON3_MASK) {//判断如果鼠标右键拖拽
                 }
             }
         };
@@ -171,7 +165,7 @@ public class Controller {
         };
     }
 
-    public KeyAdapter createKeyListener() {  //TODO: Ctrl-> Circle and Square
+    public KeyAdapter createKeyListener() {
         return new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -222,7 +216,7 @@ public class Controller {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                model.layerMove(direction,isAll);
+                model.layerMove(direction, isAll);
             }
         };
     }

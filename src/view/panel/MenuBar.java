@@ -2,7 +2,6 @@ package view.panel;
 
 import controller.Controller;
 
-import javax.naming.ldap.Control;
 import javax.swing.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -32,10 +31,10 @@ public class MenuBar extends JMenuBar {
         saveItem.addActionListener(Controller.getCurCtrl().createSaveListener());
         copyItem.addActionListener(Controller.getCurCtrl().createCopyListener());
         pasteItem.addActionListener(Controller.getCurCtrl().createPasteListener());
-        upAllItem.addActionListener(Controller.getCurCtrl().createLayerListener(1,true));
-        downAllItem.addActionListener(Controller.getCurCtrl().createLayerListener(-1,true));
-        upItem.addActionListener(Controller.getCurCtrl().createLayerListener(1,false));
-        downItem.addActionListener(Controller.getCurCtrl().createLayerListener(-1,false));
+        upAllItem.addActionListener(Controller.getCurCtrl().createLayerListener(1, true));
+        downAllItem.addActionListener(Controller.getCurCtrl().createLayerListener(-1, true));
+        upItem.addActionListener(Controller.getCurCtrl().createLayerListener(1, false));
+        downItem.addActionListener(Controller.getCurCtrl().createLayerListener(-1, false));
         fileMenu.add(readItem);
         fileMenu.add(saveItem);
         editMenu.add(copyItem);

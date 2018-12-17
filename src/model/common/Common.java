@@ -122,15 +122,15 @@ public class Common {
         }
     }
 
-    public static int cross(int x1, int y1, int x2, int y2){
-        return x1*y2-x2*y1;
+    public static int cross(int x1, int y1, int x2, int y2) {
+        return x1 * y2 - x2 * y1;
     }
 
-    public static int cross(Point a, Point b, Point c){
-        return cross(b.x-a.x,b.y-a.y,c.x-a.x,c.y-a.y);
+    public static int cross(Point a, Point b, Point c) {
+        return cross(b.x - a.x, b.y - a.y, c.x - a.x, c.y - a.y);
     }
 
     public static double dist(int x1, int y1, int x2, int y2) {
-        return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+        return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
     }
 }

@@ -194,6 +194,8 @@ public class Model {
 
     public void flushCurShape() {
         curShape = null;
+        view.getMainFrame().requestFocus();
+        view.reRender();
     }
 
     public void bindController(Controller ctrl) {
@@ -253,24 +255,24 @@ public class Model {
                 return;
             }
             int index = shapes.indexOf(curShape);
-            if (index == shapes.size()-1) return;
-            Shape next = shapes.get(index+1);
-            shapes.set(index,next);
-            shapes.set(index+1,curShape);
+            if (index == shapes.size() - 1) return;
+            Shape next = shapes.get(index + 1);
+            shapes.set(index, next);
+            shapes.set(index + 1, curShape);
             view.reRender();
             return;
         }
         if (isAll) {
             shapes.remove(curShape);
-            shapes.add(0,curShape);
+            shapes.add(0, curShape);
             view.reRender();
             return;
         }
         int index = shapes.indexOf(curShape);
         if (index == 0) return;
-        Shape prev = shapes.get(index-1);
-        shapes.set(index,prev);
-        shapes.set(index-1,curShape);
+        Shape prev = shapes.get(index - 1);
+        shapes.set(index, prev);
+        shapes.set(index - 1, curShape);
         view.reRender();
     }
 }

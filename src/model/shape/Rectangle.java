@@ -37,8 +37,8 @@ public class Rectangle extends Shape {
     public void expand(Point p, boolean equal) {
         if (!equal) this.ep = p;
         else {
-            int minDist = Math.min(p.x - sp.x, p.y - sp.y);
-            this.ep = new Point(sp.x + minDist, sp.y + minDist);
+            int minDist = Math.min(Math.abs(p.x - sp.x), Math.abs(p.y - sp.y));
+            this.ep = new Point((int) (sp.x + minDist*Math.signum(p.x - sp.x)), (int) (sp.y + minDist*Math.signum(p.y - sp.y)));
         }
     }
 
@@ -46,8 +46,8 @@ public class Rectangle extends Shape {
     public void modify(Point p, boolean equal) {
         if (!equal) this.ep = p;
         else {
-            int minDist = Math.min(p.x - sp.x, p.y - sp.y);
-            this.ep = new Point(sp.x + minDist, sp.y + minDist);
+            int minDist = Math.min(Math.abs(p.x - sp.x), Math.abs(p.y - sp.y));
+            this.ep = new Point((int) (sp.x + minDist*Math.signum(p.x - sp.x)), (int) (sp.y + minDist*Math.signum(p.y - sp.y)));
         }
     }
 

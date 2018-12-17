@@ -3,7 +3,6 @@ package model.shape;
 import model.common.Common;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Stack;
 
 public class Polygon extends Shape {

@@ -34,17 +34,7 @@ public class Start implements State {
     }
 
     @Override
-    public State rightDrag(MouseEvent e) {
-        return this;
-    }
-
-    @Override
     public State leftRelease(MouseEvent e) {
-        return this;
-    }
-
-    @Override
-    public State rightRelease(MouseEvent e) {
         return this;
     }
 }

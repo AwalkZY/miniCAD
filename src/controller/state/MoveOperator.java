@@ -43,18 +43,9 @@ public class MoveOperator implements State {
     }
 
     @Override
-    public State rightDrag(MouseEvent e) {
-        return this;
-    }
-
-    @Override
     public State leftRelease(MouseEvent e) {
         lastPoint = null;
         return this;
     }
 
-    @Override
-    public State rightRelease(MouseEvent e) {
-        return this;
-    }
 }

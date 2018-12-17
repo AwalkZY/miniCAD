@@ -20,9 +20,5 @@ public interface State {
 
     State leftDrag(MouseEvent e);
 
-    State rightDrag(MouseEvent e);
-
     State leftRelease(MouseEvent e);
-
-    State rightRelease(MouseEvent e);
 }
